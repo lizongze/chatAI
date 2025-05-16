@@ -22,7 +22,7 @@ const dist = "dist";
 // const CODE_MINIFY = dist === "dist"
 
 const argv = process.argv.slice(2);
-const needSourceMap = argv.includes('--sourcemap');
+const needSourceMap = process.env.SOURCE_MAP;
 
 module.exports = {
   webpack,
@@ -75,7 +75,7 @@ module.exports = {
           {
             mode: 'production',
             output: {
-              filename: `[name].[chunkhash:8].min.js`,
+              filename: `[name].[contenthash:8].min.js`,
               path: path.resolve(process.cwd(), dist)
             },
 

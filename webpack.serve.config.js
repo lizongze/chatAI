@@ -258,7 +258,7 @@ module.exports = (env) => {
           logLevel: 'info',
           extensions: ['.ts', '.tsx'],
           // mainFields: ['main', 'browser']
-          baseUrl: './',
+          //   baseUrl: './',
         }),
       ],
     },
