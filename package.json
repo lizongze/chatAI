@@ -4,7 +4,6 @@
   "scripts": {
     "start": "node --max-old-space-size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --config ./webpack.serve.config.js",
     "prepare": "husky",
-    "pre-eslint": "export ESLINT_USE_FLAT_CONFIG=false",
     "post-fmt": "git add `git diff HEAD^ --stat | grep '|' | awk '{ print $1 }'`; git commit -m 'chore: prettier' -q --no-verify",
     "build:production": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js",
     "build:production:sourcemap": "NODE_ENV=production SOURCE_MAP=true ./node_modules/webpack/bin/webpack.js"
