@@ -237,9 +237,9 @@ module.exports = (env) => {
             // modules: ['node_modules', path.join(__dirname, './node_modules')],
             // extensions: [ '.js', '.jsx', '.ts', '.tsx', '.scss', '.json' ],
             alias: {
-                '@root': path.resolve(APP_PATH),
-                '@components': path.resolve(APP_PATH, './components'),
-                '@assets': path.resolve(APP_PATH, './assets'),
+                // '@root': path.resolve(APP_PATH),
+                // '@components': path.resolve(APP_PATH, './components'),
+                // '@assets': path.resolve(APP_PATH, './assets'),
                 // '@main': path.resolve(APP_PATH, './main'),
             },
             plugins: [
