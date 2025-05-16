@@ -1,11 +1,11 @@
 {
   "main": "index.js",
   "scripts": {
-    "start": "node --max_old_space_size=4096 ./start.js",
+    "start": "node --max-old-space-size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --config ./webpack.serve.config.js",
     "prepare": "husky",
     "pre-eslint": "export ESLINT_USE_FLAT_CONFIG=false",
-    "build:production:": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js --production --sourcemap",
-    "build:production:sourcemap": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js --production --sourcemap"
+    "build:production:": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js",
+    "build:production:sourcemap": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js"
   },
   "pre-commit": [
     "lint-staged"

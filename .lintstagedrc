@@ -3,6 +3,10 @@
     "prettier --write",
     "git add"
   ],
+  "./*.{js,jsx,ts,tsx}": [
+    "prettier --write",
+    "git add"
+  ],
   "./src/**/*.{css,sass,scss,less}": [
     "stylelint --fix",
     "git add"
