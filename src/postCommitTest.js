@@ -8,7 +8,7 @@ const commandLineArgs = require('command-line-args');
 const optionDefinitions = [
   // post commit test 12 3
   {
-                    name: 'webpackConfig',
+    name: 'webpackConfig',
     alias: 'w',
     type: String,
   },
