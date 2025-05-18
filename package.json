@@ -2,7 +2,7 @@
   "main": "index.js",
   "version": "0.0.1",
   "scripts": {
-    "start": "node --max-old-space-size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --config ./webpack.serve.config.js",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider; node --max-old-space-size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --config ./webpack.serve.config.js",
     "prepare": "husky",
     "post-fmt": "git add `git diff HEAD^ --stat | grep '|' | awk '{ print $1 }'`; git commit -m 'chore: prettier' --no-verify",
     "build:production": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js",
@@ -41,6 +41,7 @@
     "babel-plugin-import": "^1.13.8",
     "babel-plugin-import-hook": "^1.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "cache-loader": "^4.1.0",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "command-line-args": "^6.0.1",
     "cross-env": "^7.0.3",

@@ -90,6 +90,47 @@ module.exports = (env) => {
     // devtool: "cheap-module-source-map",
     // cheap-module-source-map
 
+    // N.B: 开启 持久化缓存 cache snapshot 相关配置
+    // 参考：深度解析webpack5持久化缓存[https://segmentfault.com/a/1190000041726881]
+    cache: {
+      // 开启持久化缓存
+      type: 'filesystem',
+      buildDependencies: {
+        config: [__filename],
+      },
+    },
+    snapshot: {
+      // 针对包管理器维护存放的路径，如果相关依赖命中了这些路径，那么他们在创建 snapshot 的过程当中不会将 timestamps、content hash 作为 snapshot 的创建方法，而是 package 的 name + version
+      // 一般为了性能方面的考虑，
+      managedPaths: [path.resolve(__dirname, '../node_modules')],
+      immutablePaths: [],
+      // 对于 buildDependencies snapshot 的创建方式
+      buildDependencies: {
+        // hash: true
+        timestamp: true,
+      },
+      // 针对 module build 创建 snapshot 的方式
+      module: {
+        // hash: true
+        timestamp: true,
+      },
+      // 在 resolve request 的时候创建 snapshot 的方式
+      resolve: {
+        // hash: true
+        timestamp: true,
+      },
+      // 在 resolve buildDependencies 的时候创建 snapshot 的方式
+      resolveBuildDependencies: {
+        // hash: true
+        timestamp: true,
+      },
+    },
+    // optimization: {
+    //     moduleIds: 'deterministic', // 根据文件路径生成确定性ID
+    //     chunkIds: 'deterministic',  // 避免开发时chunkID变化
+    //     runtimeChunk: 'runtime',     // 分离runtime代码防止频繁变更
+    // },
+
     devServer: devServerConfig(env),
 
     stats: {
@@ -161,6 +202,8 @@ module.exports = (env) => {
         {
           test: [/\.tsx?$/],
           use: [
+            // N.B: 持久化缓存，类似webpack5文件缓存
+            'cache-loader',
             {
               loader: 'thread-loader',
               options: {
@@ -172,6 +215,7 @@ module.exports = (env) => {
               loader: 'babel-loader',
               options: {
                 babelrc: false,
+                cacheDirectory: true,
                 presets: ['@babel/preset-typescript'],
                 plugins: [
                   // '@babel/plugin-syntax-dynamic-import',
@@ -251,7 +295,7 @@ module.exports = (env) => {
 
     resolve: {
       // modules: ['node_modules', path.join(__dirname, './node_modules')],
-      //   extensions: [ '.tsx', '.ts' ],
+      //   extensions: [ '.js', '.jsx', '.ts', '.tsx', '.scss', '.json' ],
       alias: {
         // 'react-dom': '@hot-loader/react-dom',
         // '@root': path.resolve(APP_PATH),
