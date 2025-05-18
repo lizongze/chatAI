@@ -182,6 +182,7 @@ module.exports = (env) => {
             {
               loader: 'ts-loader',
               options: {
+                // N.B: must enable happyPackMode for thread-loader
                 happyPackMode: true,
                 experimentalWatchApi: true,
                 transpileOnly: true, // IMPORTANT! use transpileOnly mode to speed-up compilation
@@ -217,6 +218,7 @@ module.exports = (env) => {
     },
 
     plugins: [
+      // N.B: enables fast refresh
       new ReactRefreshWebpackPlugin(),
       new HtmlWebpackPlugin({
         filename: './index.html', // 生成的html存放路径，相对于 path
@@ -258,8 +260,6 @@ module.exports = (env) => {
         // '@main': path.resolve(APP_PATH, './main'),
       },
       plugins: [
-        // enables fast refresh
-        // new ReactRefreshWebpackPlugin(),
         new TsconfigPathsPlugin({
           configFile: './tsconfig.json',
           logLevel: 'info',

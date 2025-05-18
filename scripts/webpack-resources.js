@@ -163,7 +163,7 @@ module.exports = {
               test: /\.scss$/,
               // css-hot-loader会增加打包的体积
               include: [
-                /apps(\/|\\)link(\/|\\)src(\/|\\)assets/,
+                /src(\/|\\)assets/,
               ],
               loader: 'happypack/loader',
               options: {
