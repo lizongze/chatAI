@@ -1,10 +1,11 @@
 let path = require('path');
+const os = require('os');
 let resources = require('./scripts/webpack-resources');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const postcssPresetEnv = require('postcss-preset-env');
-
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ROOT_PATH = path.resolve(__dirname);
 const APP_PATH = path.resolve(ROOT_PATH, 'src');
 
@@ -157,36 +158,38 @@ module.exports = (env) => {
             },
           ],
         },
-        // {
-        // 	test: [ /\.tsx?$/ ],
-        // 	use: [
-        // 		// { loader: 'react-hot-loader/webpack' },
-        // 		{
-        // 			loader: 'babel-loader',
-        // 			options: {
-        // 				babelrc: false,
-        // 				presets: [
-        // 					"@babel/preset-typescript"
-        // 				],
-        // 				plugins: [
-        // 					'@babel/plugin-syntax-dynamic-import',
-        // 					'extract-hoc/babel',
-        // 					// N.B: 用了babel-loader 必须用"react-hot-loader/babel"才能让代码跑起来，不然会报错。。
-        // 					"react-hot-loader/babel",
-        // 				]
-        // 			}
-        // 		},
-        // 		{
-        // 			loader: 'ts-loader',
-        // 			options: {
-        // 				happyPackMode: true,
-        // 				experimentalWatchApi: true,
-        // 				transpileOnly: true // IMPORTANT! use transpileOnly mode to speed-up compilation
-        // 			}
-        // 		}
-        // 	],
-        // 	exclude: [ /node_modules/, /\.scss.ts$/, /\.test.tsx?$/ ]
-        // },
+        {
+          test: [/\.tsx?$/],
+          use: [
+            {
+              loader: 'thread-loader',
+              options: {
+                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                workers: os.cpus().length,
+              },
+            },
+            {
+              loader: 'babel-loader',
+              options: {
+                babelrc: false,
+                presets: ['@babel/preset-typescript'],
+                plugins: [
+                  // '@babel/plugin-syntax-dynamic-import',
+                  'react-refresh/babel',
+                ],
+              },
+            },
+            {
+              loader: 'ts-loader',
+              options: {
+                happyPackMode: true,
+                experimentalWatchApi: true,
+                transpileOnly: true, // IMPORTANT! use transpileOnly mode to speed-up compilation
+              },
+            },
+          ],
+          exclude: [/node_modules/, /\.scss.ts$/, /\.test.tsx?$/],
+        },
         {
           test: /\.(woff|woff2|eot|ttf)(\?.*$|$)/,
           use: ['url-loader'],
@@ -214,6 +217,7 @@ module.exports = (env) => {
     },
 
     plugins: [
+      new ReactRefreshWebpackPlugin(),
       new HtmlWebpackPlugin({
         filename: './index.html', // 生成的html存放路径，相对于 path
         template: './src/assets/index.html',
@@ -245,14 +249,17 @@ module.exports = (env) => {
 
     resolve: {
       // modules: ['node_modules', path.join(__dirname, './node_modules')],
-      // extensions: [ '.js', '.jsx', '.ts', '.tsx', '.scss', '.json' ],
+      //   extensions: [ '.tsx', '.ts' ],
       alias: {
+        // 'react-dom': '@hot-loader/react-dom',
         // '@root': path.resolve(APP_PATH),
         // '@components': path.resolve(APP_PATH, './components'),
         // '@assets': path.resolve(APP_PATH, './assets'),
         // '@main': path.resolve(APP_PATH, './main'),
       },
       plugins: [
+        // enables fast refresh
+        // new ReactRefreshWebpackPlugin(),
         new TsconfigPathsPlugin({
           configFile: './tsconfig.json',
           logLevel: 'info',
