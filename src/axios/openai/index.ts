@@ -62,7 +62,7 @@ const mock1 = {
   },
 };
 
-function errorMock(error) {
-  responeseInterceptorForMemoAi({ data: mock1 });
+function errorMock({ config }) {
+  responeseInterceptorForMemoAi({ data: mock1, config });
   return mock1;
 }

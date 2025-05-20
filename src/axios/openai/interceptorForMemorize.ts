@@ -16,18 +16,18 @@ const initItemForAI = {
 };
 
 export const conversionsHistory: IconversionItem[] = []
-  //   .concat(messages);
   .concat([
-    { role: 'user', content: "What's the weather like today? 0" },
-    {
-      role: 'assistant',
-      content: "I don't have real-time data, but you can check a weather service 0.",
-    },
-    { role: 'user', content: "What's the weather like today? 1" },
-    {
-      role: 'assistant',
-      content: "I don't have real-time data, but you can check a weather service 1.",
-    },
+    initItemForAI
+    // { role: 'user', content: "What's the weather like today? 0" },
+    // {
+    //   role: 'assistant',
+    //   content: "I don't have real-time data, but you can check a weather service 0.",
+    // },
+    // { role: 'user', content: "What's the weather like today? 1" },
+    // {
+    //   role: 'assistant',
+    //   content: "I don't have real-time data, but you can check a weather service 1.",
+    // },
   ]);
 
 export const requestInterceptorForMemoAi = (config) => {
@@ -35,19 +35,27 @@ export const requestInterceptorForMemoAi = (config) => {
   const { messages, ...restData } = config.data;
   const memorizedData = {
     ...restData,
-    messages: [initItemForAI, ...conversionsHistory, ...messages],
+    messages: [
+      // initItemForAI,
+      ...conversionsHistory,
+      ...messages,
+    ],
   };
   config.data = memorizedData;
-  // console.log("interceptor end : config", config);
+  console.log('interceptor end : config', config);
   return config;
 };
 
 export const responeseInterceptorForMemoAi = (response) => {
-  const { choices = [] } = response.data;
+  const { data, config } = response;
+  const { choices = [] } = data;
+  // todo: 获取config.data,一起push进conversionsHistory
+  const curConfig = JSON.parse(config.data);
+  const lastMsg = curConfig.messages.pop();
   if (choices.length > 0) {
     const curMsgs = choices.map((item) => item.message);
-    conversionsHistory.push(...curMsgs);
+    conversionsHistory.push(lastMsg, ...curMsgs);
   }
-  // console.log('response', response);
+  console.log('response', response);
   return response;
 };
