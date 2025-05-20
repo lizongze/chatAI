@@ -1,0 +1,53 @@
+type IconversionItem = {
+  role: 'user' | 'system' | 'assistant' | 'developer' | 'tool';
+  content: string;
+};
+
+// const messages = [
+//   {'role': 'system', 'content': 'You are a helpful assistant that remembers previous conversations.'},
+//   {'role': 'user', 'content': "What's the weather like today?"},
+//   {'role': 'assistant', 'content': "I don't have real-time data, but you can check a weather service."},
+// //   {"role": "user", "content": "What did I ask earlier?"}
+//   //# The model will recall the previous question
+// ]
+const initItemForAI = {
+  role: 'system',
+  content: 'You are a helpful assistant that remembers previous conversations.',
+};
+
+export const conversionsHistory: IconversionItem[] = []
+  //   .concat(messages);
+  .concat([
+    { role: 'user', content: "What's the weather like today? 0" },
+    {
+      role: 'assistant',
+      content: "I don't have real-time data, but you can check a weather service 0.",
+    },
+    { role: 'user', content: "What's the weather like today? 1" },
+    {
+      role: 'assistant',
+      content: "I don't have real-time data, but you can check a weather service 1.",
+    },
+  ]);
+
+export const requestInterceptorForMemoAi = (config) => {
+  // console.log("interceptor start : config", config);
+  const { messages, ...restData } = config.data;
+  const memorizedData = {
+    ...restData,
+    messages: [initItemForAI, ...conversionsHistory, ...messages],
+  };
+  config.data = memorizedData;
+  // console.log("interceptor end : config", config);
+  return config;
+};
+
+export const responeseInterceptorForMemoAi = (response) => {
+  const { choices = [] } = response.data;
+  if (choices.length > 0) {
+    const curMsgs = choices.map((item) => item.message);
+    conversionsHistory.push(...curMsgs);
+  }
+  // console.log('response', response);
+  return response;
+};
