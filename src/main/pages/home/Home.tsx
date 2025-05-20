@@ -1,11 +1,14 @@
 // import { OpenAiKey } from '@constants/index';
 import axiosWithMemoAi from '@root/src/axios/openai';
-import { conversionsHistory } from '@root/src/axios/openai/interceptorForMemorize';
+// import { conversionsHistory } from '@root/src/axios/openai/interceptorForMemorize';
 import { ChatList } from './ChatList';
 import { observer } from 'mobx-react';
 import { action } from 'mobx';
-import { useEffect } from 'react';
+
+// import { useEffect } from 'react';
 import { homeStore } from './homeStore';
+import { TextBtn } from './TextBtn';
+import * as styles from './Home.scss';
 
 // N.B: 手动实现记忆功能：（给AI提示，让它学会记忆）
 // * 考虑用一个session store/内存也行，来存储历史消息；
@@ -50,13 +53,26 @@ export const Home = observer(() => {
   const data = fmt(chatList);
   console.log();
 
-  useEffect(() => {
-    fetchAI(messagesList);
-  }, []);
+  // useEffect(() => {
+  //   // fetchAI(messagesList);
+  // }, []);
+
+  const { flex } = styles;
 
   return (
-    <div>
-      <ChatList value={data} />
+    <div className={flex}>
+      <div>
+        <ChatList value={data} />
+      </div>
+      <TextBtn
+        onClick={(value) => {
+          const { chatList } = homeStore;
+          fetchAI(value).then(() => {
+            homeStore.textValue = '';
+          });
+          chatList.push(value);
+        }}
+      />
     </div>
   );
 });
