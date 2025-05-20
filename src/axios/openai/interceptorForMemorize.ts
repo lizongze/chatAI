@@ -15,20 +15,19 @@ const initItemForAI = {
   content: 'You are a helpful assistant that remembers previous conversations.',
 };
 
-export const conversionsHistory: IconversionItem[] = []
-  .concat([
-    initItemForAI
-    // { role: 'user', content: "What's the weather like today? 0" },
-    // {
-    //   role: 'assistant',
-    //   content: "I don't have real-time data, but you can check a weather service 0.",
-    // },
-    // { role: 'user', content: "What's the weather like today? 1" },
-    // {
-    //   role: 'assistant',
-    //   content: "I don't have real-time data, but you can check a weather service 1.",
-    // },
-  ]);
+export const conversionsHistory: IconversionItem[] = [].concat([
+  initItemForAI,
+  // { role: 'user', content: "What's the weather like today? 0" },
+  // {
+  //   role: 'assistant',
+  //   content: "I don't have real-time data, but you can check a weather service 0.",
+  // },
+  // { role: 'user', content: "What's the weather like today? 1" },
+  // {
+  //   role: 'assistant',
+  //   content: "I don't have real-time data, but you can check a weather service 1.",
+  // },
+]);
 
 export const requestInterceptorForMemoAi = (config) => {
   // console.log("interceptor start : config", config);
