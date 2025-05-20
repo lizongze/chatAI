@@ -4,6 +4,7 @@
 * 方案：去除lint-staged配置里的git add,新增个npm快捷命令辅助提交
 * 影响：导致格式化的代码没有自动提交，需要手动提交或手动执行npm run post-fmt
 * bug：遇到删除文件的case时，git add 已删文件会报错，这时只能手动add,commit相关文件了
+* css：css影响不大，不用区分是否格式化，直接git add就行
 
 ### 在tsconfig.json里配置paths alias就行，不用在webpack里配
 
