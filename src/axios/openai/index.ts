@@ -15,7 +15,7 @@ instanceForChatAiWithMemo.interceptors.request.use(requestInterceptorForMemoAi);
 
 instanceForChatAiWithMemo.interceptors.response.use(
   responeseInterceptorForMemoAi,
-  DEBUG ? errorMock : (v) => v,
+  DEBUG ? errorMock : error => { throw error }
 );
 
 export const axiosForOpenAiWithMemo = instanceForChatAiWithMemo;

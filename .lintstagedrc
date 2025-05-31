@@ -9,7 +9,7 @@
     "stylelint --fix",
     "git add"
   ],
-   "**/*.{ts,tsx}": "eslint --ext .ts",
+   "**/*.{ts,tsx}": "eslint  --cache --fix --ext .ts",
    "**/*.scss": [
     "stylelint --fix",
     "git add",

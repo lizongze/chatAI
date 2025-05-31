@@ -9,6 +9,7 @@ import { action } from 'mobx';
 import { homeStore } from './homeStore';
 import { TextBtn } from './TextBtn';
 import * as styles from './Home.scss';
+import { ModalInput } from './ModalInput';
 
 // N.B: 手动实现记忆功能：（给AI提示，让它学会记忆）
 // * 考虑用一个session store/内存也行，来存储历史消息；
@@ -25,18 +26,20 @@ const messagesList = [{ role: 'user', content: 'What did I ask earlier?' }];
 
 console.log('axiosWithMemoAi');
 
+const { getOpenAiKey } = homeStore;
+
 const fetchAI = (data) =>
-  axiosWithMemoAi(data).then(
-    action((data) => {
-      const { choices = [] } = data;
+  axiosWithMemoAi(data, getOpenAiKey()).then(
+    action((resData) => {
+      const { choices = [] } = resData.data;
       const { chatList } = homeStore;
       if (choices.length > 0) {
-        const curMsgs = choices.map((item) => item.message);
+        const curMsgs = choices.map(({ message }) => message);
         // conversionsHistory.push(...curMsgs)
         chatList.push(...curMsgs);
       }
-      console.log('chatList len', chatList.length);
-      return data;
+      console.log('chatList len', resData, chatList.length, chatList);
+      return resData;
     }),
   );
 
@@ -49,7 +52,7 @@ const fmt = (list) =>
 export const Home = observer(() => {
   // conversionsHistory
   // const []
-  const { chatList } = homeStore;
+  const { chatList, isModalOpen } = homeStore;
   const data = fmt(chatList);
   console.log();
 
@@ -59,13 +62,19 @@ export const Home = observer(() => {
 
   const { flex } = styles;
 
-  return (
+  return isModalOpen
+    ? (<ModalInput />)
+    : (
     <div className={flex}>
       <div>
         <ChatList value={data} />
       </div>
       <TextBtn
-        onClick={(value) => {
+        onClick={(content) => {
+          const value = {
+            role: 'user',
+            content,
+          };
           const { chatList } = homeStore;
           fetchAI(value).then(() => {
             homeStore.textValue = '';

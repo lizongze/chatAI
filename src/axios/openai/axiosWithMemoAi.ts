@@ -13,8 +13,12 @@ import { ChatAiModel } from '@constants';
 //   //# The model will recall the previous question
 // ]
 
-export const axiosWithMemoAi = (messages) =>
+export const axiosWithMemoAi = (messages, OpenAiKey) =>
   instanceForChatAiWithMemo.post(openAiApi, {
     model: ChatAiModel,
     messages: [].concat(messages).filter((v) => v),
+  }, {
+    headers: {
+      Authorization: `Bearer ${OpenAiKey}`,
+    },
   });

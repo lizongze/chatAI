@@ -1,23 +1,21 @@
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
+import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import { useDeferredValue } from 'react';
 import { homeStore } from './homeStore';
 import * as styles from './TextBtn.scss';
 
-export const TextBtn = observer(({ onClick, value }) => {
+export const TextBtn = observer(({ onClick, value, className, label = '提问' }) => {
   const handleClick = () => {
     // onClick(data)
     const {
       // chatList,
       textValue,
     } = homeStore;
-    const value = {
-      role: 'user',
-      content: textValue,
-    };
-    onClick(value);
+
+    onClick(textValue);
     // chatList.push()
   };
 
@@ -26,10 +24,10 @@ export const TextBtn = observer(({ onClick, value }) => {
   const deferValue = textValue;
   const { flex, flexAuto, icon } = styles;
   return (
-    <div className={flex}>
+    <div className={classNames(flex, className)}>
       <TextField
         id="outlined-multiline-flexible"
-        label="提问"
+        label={label}
         multiline
         maxRows={4}
         value={deferValue}

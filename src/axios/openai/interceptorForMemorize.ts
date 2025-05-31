@@ -52,7 +52,10 @@ export const responeseInterceptorForMemoAi = (response) => {
   const curConfig = JSON.parse(config.data);
   const lastMsg = curConfig.messages.pop();
   if (choices.length > 0) {
-    const curMsgs = choices.map((item) => item.message);
+    const curMsgs = choices.map(({ message }) => {
+      const { content, role } = message;
+      return { content, role }
+    });
     conversionsHistory.push(lastMsg, ...curMsgs);
   }
   console.log('response', response);
