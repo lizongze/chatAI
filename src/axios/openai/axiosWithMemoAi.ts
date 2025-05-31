@@ -14,11 +14,15 @@ import { ChatAiModel } from '@constants';
 // ]
 
 export const axiosWithMemoAi = (messages, OpenAiKey) =>
-  instanceForChatAiWithMemo.post(openAiApi, {
-    model: ChatAiModel,
-    messages: [].concat(messages).filter((v) => v),
-  }, {
-    headers: {
-      Authorization: `Bearer ${OpenAiKey}`,
+  instanceForChatAiWithMemo.post(
+    openAiApi,
+    {
+      model: ChatAiModel,
+      messages: [].concat(messages).filter((v) => v),
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${OpenAiKey}`,
+      },
+    },
+  );

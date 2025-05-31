@@ -54,7 +54,7 @@ export const responeseInterceptorForMemoAi = (response) => {
   if (choices.length > 0) {
     const curMsgs = choices.map(({ message }) => {
       const { content, role } = message;
-      return { content, role }
+      return { content, role };
     });
     conversionsHistory.push(lastMsg, ...curMsgs);
   }

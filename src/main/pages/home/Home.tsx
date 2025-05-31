@@ -62,9 +62,9 @@ export const Home = observer(() => {
 
   const { flex } = styles;
 
-  return isModalOpen
-    ? (<ModalInput />)
-    : (
+  return isModalOpen ? (
+    <ModalInput />
+  ) : (
     <div className={flex}>
       <div>
         <ChatList value={data} />

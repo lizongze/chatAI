@@ -5,11 +5,10 @@ import { TextBtn } from './TextBtn';
 import { homeStore } from './homeStore';
 import * as styles from './ModalInput.scss';
 
-
 const handleClose = action(() => {
   console.log('handleClose');
   homeStore.isModalOpen = false;
-})
+});
 
 export const ModalInput = observer(({ value, onChange }) => {
   const { isModalOpen } = homeStore;
@@ -35,5 +34,5 @@ export const ModalInput = observer(({ value, onChange }) => {
         }}
       />
     </Modal>
-  )
+  );
 });

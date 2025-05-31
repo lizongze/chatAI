@@ -10,11 +10,11 @@ class HomeStore {
   @observable
   public accessor isModalOpen = true;
 
-  curOpenAiKey = ''
+  curOpenAiKey = '';
 
   getOpenAiKey = () => {
-    return this.curOpenAiKey || defaultOpenAiKey
-  }
+    return this.curOpenAiKey || defaultOpenAiKey;
+  };
 }
 
 export const homeStore = new HomeStore();
